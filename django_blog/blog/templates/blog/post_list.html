@@ -7,6 +7,10 @@
 </head>
 <body>
     <h1>All Blog Posts</h1>
+        <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q" placeholder="Search posts..." required>
+        <button type="submit">Search</button>
+    </form>
     {% if user.is_authenticated %}
         <p><a href="{% url 'post-create' %}">Create New Post</a></p>
     {% endif %}
@@ -25,6 +29,14 @@
     {% empty %}
         <p>No posts yet.</p>
     {% endfor %}
+
+                {% if post.tags.all %}
+                <p>Tags:
+                    {% for tag in post.tags.all %}
+                        <a href="{% url 'posts-by-tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
     <p><a href="{% url 'home' %}">Back to Home</a></p>
 </body>
 </html>

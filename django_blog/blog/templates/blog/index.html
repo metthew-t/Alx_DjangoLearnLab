@@ -9,6 +9,11 @@
     <h1>Welcome to the Blog</h1>
     <p>This is the home page.</p>
 
+        <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q" placeholder="Search posts..." required>
+        <button type="submit">Search</button>
+    </form>
+
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}!</p>
         <p><a href="{% url 'profile' %}">View Profile</a></p>
