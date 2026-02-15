@@ -12,6 +12,7 @@
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}!</p>
         <p><a href="{% url 'profile' %}">View Profile</a></p>
+        <p><a href="{% url 'post-list' %}">View All Posts</a></p>
         <p><a href="{% url 'logout' %}">Logout</a></p>
     {% else %}
         <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a></p>
