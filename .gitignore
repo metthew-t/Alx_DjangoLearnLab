@@ -8,4 +8,4 @@ __pycache__/
 *.pyc 
 # Database
 *.sqlite3
-*.db
+*.dbadvanced-api-project/ 
