@@ -6,3 +6,6 @@ ECHO is on.
 # Python cache 
 __pycache__/ 
 *.pyc 
+# Database
+*.sqlite3
+*.db
