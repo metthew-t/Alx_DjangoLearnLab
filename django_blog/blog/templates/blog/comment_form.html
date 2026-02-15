@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Edit Comment{% else %}New Comment{% endif %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/style.css' %}">
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Edit Comment{% else %}Add Comment{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <p><a href="{% url 'post-detail' view.kwargs.post_id %}">Cancel</a></p>
+</body>
+</html>
