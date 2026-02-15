@@ -9,3 +9,4 @@ __pycache__/
 # Database
 *.sqlite3
 *.dbadvanced-api-project/ 
+advanced-api-project/ 
