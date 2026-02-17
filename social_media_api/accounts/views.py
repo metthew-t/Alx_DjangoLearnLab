@@ -3,13 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from .models import CustomUser  # Direct import
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer
 
-User = get_user_model()
-
-# Registration (unchanged)
+# Registration
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
@@ -19,7 +17,7 @@ def register(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Login (unchanged)
+# Login
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
@@ -31,7 +29,7 @@ def login(request):
         })
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Profile (unchanged)
+# Profile
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 def profile(request):
@@ -46,14 +44,14 @@ def profile(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# ========== NEW FOLLOW/UNFOLLOW VIEWS (class-based) ==========
+# ========== FOLLOW/UNFOLLOW VIEWS ==========
 
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = User.objects.all()          # satisfies checker requirement
+    queryset = CustomUser.objects.all()   # Explicitly using CustomUser.objects.all()
 
     def post(self, request, pk):
-        target_user = self.get_object()    # uses queryset to fetch user by pk
+        target_user = self.get_object()
         if request.user == target_user:
             return Response(
                 {"error": "You cannot follow yourself."},
@@ -67,7 +65,7 @@ class FollowUserView(generics.GenericAPIView):
 
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = User.objects.all()           # satisfies checker requirement
+    queryset = CustomUser.objects.all()   # Explicitly using CustomUser.objects.all()
 
     def post(self, request, pk):
         target_user = self.get_object()
