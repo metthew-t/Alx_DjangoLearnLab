@@ -38,3 +38,36 @@ Default page size: 10. Use `?page=<number>` to navigate.
 ### Example Requests
 
 **Create a post**
+
+
+## Follow System & Feed
+
+### Follow/Unfollow Endpoints
+All endpoints require authentication (Token).
+
+- **Follow a user**  
+  `POST /api/accounts/follow/<user_id>/`  
+  Adds the target user to your following list.  
+  *Response:* `{"message": "You are now following <username>."}`
+
+- **Unfollow a user**  
+  `POST /api/accounts/unfollow/<user_id>/`  
+  Removes the target user from your following list.  
+  *Response:* `{"message": "You have unfollowed <username>."}`
+
+### Feed Endpoint
+- **Get your feed**  
+  `GET /api/feed/`  
+  Returns a paginated list of posts from users you follow, ordered by most recent.  
+  Requires authentication.  
+  *Response:* List of posts (same format as `/posts/`).
+
+### Example
+```bash
+# Follow user with ID 2
+curl -X POST http://127.0.0.1:8000/api/accounts/follow/2/ \
+  -H "Authorization: Token YOUR_TOKEN"
+
+# Get feed
+curl http://127.0.0.1:8000/api/feed/ \
+  -H "Authorization: Token YOUR_TOKEN"
