@@ -1,4 +1,21 @@
-venv/ 
-__pycache__/ 
-*.pyc 
-db.sqlite3 
+# Virtual environment
+venv/
+env/
+ENV/
+venv.bak/
+env.bak/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local database
+*.sqlite3
+.db
+
+# Collected static files
+staticfiles/
+media/
+
+# Environment variables
+.env
