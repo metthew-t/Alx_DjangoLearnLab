@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
-from .models import CustomUser  # Direct import
+from .models import CustomUser
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer
 
 # Registration
@@ -44,13 +44,13 @@ def profile(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# ========== FOLLOW/UNFOLLOW VIEWS ==========
-
+# Follow User View (class-based)
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = CustomUser.objects.all()   # Explicitly using CustomUser.objects.all()
+    queryset = CustomUser.objects.all()
+    lookup_url_kwarg = 'user_id'
 
-    def post(self, request, pk):
+    def post(self, request, user_id=None):
         target_user = self.get_object()
         if request.user == target_user:
             return Response(
@@ -63,11 +63,13 @@ class FollowUserView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
+# Unfollow User View (class-based)
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = CustomUser.objects.all()   # Explicitly using CustomUser.objects.all()
+    queryset = CustomUser.objects.all()
+    lookup_url_kwarg = 'user_id'
 
-    def post(self, request, pk):
+    def post(self, request, user_id=None):
         target_user = self.get_object()
         if request.user == target_user:
             return Response(
