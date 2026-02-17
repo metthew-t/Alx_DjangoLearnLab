@@ -53,15 +53,15 @@ class FollowUserView(generics.GenericAPIView):
     def post(self, request, user_id=None):
         target_user = self.get_object()
         if request.user == target_user:
-            return Response(
-                {"error": "You cannot follow yourself."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
         request.user.following.add(target_user)
-        return Response(
-            {"message": f"You are now following {target_user.username}."},
-            status=status.HTTP_200_OK
-        )
+    # Create notification
+        Notification.objects.create(
+        recipient=target_user,
+        actor=request.user,
+        verb='started following you'
+    )
+        return Response({"message": f"You are now following {target_user.username}."}, status=status.HTTP_200_OK)
 
 # Unfollow User View (class-based)
 class UnfollowUserView(generics.GenericAPIView):

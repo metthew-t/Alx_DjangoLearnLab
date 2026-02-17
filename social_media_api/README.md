@@ -71,3 +71,48 @@ curl -X POST http://127.0.0.1:8000/api/accounts/follow/2/ \
 # Get feed
 curl http://127.0.0.1:8000/api/feed/ \
   -H "Authorization: Token YOUR_TOKEN"
+
+
+
+  ## Likes & Notifications
+
+### Like/Unlike Posts
+
+- **Like a post**  
+  `POST /api/posts/{id}/like/`  
+  Requires authentication.  
+  Response: `{"message": "Post liked"}` or `{"message": "Already liked"}`
+
+- **Unlike a post**  
+  `POST /api/posts/{id}/unlike/`  
+  Requires authentication.  
+  Response: `{"message": "Post unliked"}` or `{"message": "Not liked"}`
+
+### Notifications
+
+- **Get your notifications**  
+  `GET /api/notifications/`  
+  Returns list of notifications for the authenticated user, ordered newest first.  
+  Each notification includes:
+  - `actor_username`: user who performed the action
+  - `verb`: description (e.g., "liked your post")
+  - `target_type`: type of object (post/comment)
+  - `target_object_id`: ID of the related object
+  - `timestamp`: when it happened
+  - `read`: boolean indicating if read (default false)
+
+Example response:
+```json
+[
+  {
+    "id": 1,
+    "recipient": 2,
+    "actor": 1,
+    "actor_username": "alice",
+    "verb": "liked your post",
+    "target_type": "post",
+    "target_object_id": 5,
+    "timestamp": "2026-02-18T10:00:00Z",
+    "read": false
+  }
+]
