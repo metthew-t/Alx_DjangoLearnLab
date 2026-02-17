@@ -2,6 +2,26 @@ import os
 import dj_database_url
 from pathlib import Path
 
+DEBUG = False
+SECRET_KEY = os.environ.get('SECRET_KEY')   # Must be set as environment variable
+
+ALLOWED_HOSTS = ['your-app-name.herokuapp.com', 'localhost', '127.0.0.1']
+
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3', conn_max_age=600)
+}
+
+# Security headers
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True   # Redirect all HTTP to HTTPS
+
+# Static files (WhiteNoise)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -32,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +74,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
         conn_max_age=600
+    
     )
 }
 
